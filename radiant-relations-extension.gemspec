@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.name        = "radiant-relations-extension"
   s.version     = RadiantRelationsExtension::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Jan De Poorter"]
+  s.authors     = ["Jan De Poorter", "Benny Degezelle"]
   s.email       = ["jan@defv.be"]
   s.homepage    = "http://github.com/defv/radiant-relations-extension"
   s.summary     = %q{Relations for Radiant CMS}
