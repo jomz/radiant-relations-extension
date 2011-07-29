@@ -11,6 +11,6 @@ class RelationPagePart < PagePart
   
   private
   def update_related_pages
-    page.related_page_ids = related_page_ids.compact
+    page.related_page_ids = related_page_ids.try(:compact)
   end
 end
