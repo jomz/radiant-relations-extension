@@ -4,3 +4,6 @@ nl:
     page_parts:
       relation_page_part:
         add_row: Relatie toevoegen
+  support:
+    select:
+      prompt: Maak een keuze
