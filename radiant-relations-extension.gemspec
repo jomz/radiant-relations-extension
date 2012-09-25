@@ -7,10 +7,10 @@ Gem::Specification.new do |s|
   s.version     = RadiantRelationsExtension::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Jan De Poorter", "Benny Degezelle"]
-  s.email       = ["jan@defv.be"]
-  s.homepage    = "http://github.com/defv/radiant-relations-extension"
-  s.summary     = %q{Relations for Radiant CMS}
-  s.description = %q{Makes Radiant better by adding relations!}
+  s.email       = ["rubygems@monkeypatch.be"]
+  s.homepage    = "http://github.com/jomz/radiant-relations-extension"
+  s.summary     = %q{Relations extension for Radiant CMS}
+  s.description = %q{Allows you to define relations between pages}
   
   ignores = if File.exist?('.gitignore')
     File.read('.gitignore').split("\n").inject([]) {|a,p| a + Dir[p] }
@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   
   s.post_install_message = %{
-  Add this to your radiant project with:
-    config.gem 'radiant-relations-extension', :version => '~>#{RadiantRelationsExtension::VERSION}'
+    Add this to your radiant project by putting this line in your Gemfile:
+      gem "radiant-children_config-extension", "~> #{RadiantRelationsExtension::VERSION}"
   }
 end
