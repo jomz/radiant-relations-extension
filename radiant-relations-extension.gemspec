@@ -24,6 +24,6 @@ Gem::Specification.new do |s|
   
   s.post_install_message = %{
     Add this to your radiant project by putting this line in your Gemfile:
-      gem "radiant-children_config-extension", "~> #{RadiantRelationsExtension::VERSION}"
+      gem "radiant-relations-extension", "~> #{RadiantRelationsExtension::VERSION}"
   }
 end
