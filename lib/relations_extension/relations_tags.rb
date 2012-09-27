@@ -5,7 +5,7 @@ module RelationsExtension::RelationsTags
     tag.locals.related_pages = tag.locals.page.related_pages
     if tag.attr['from_ancestor']
       ancestor_path = Page.find(tag.attr['from_ancestor']).path
-      tag.locals.related_pages.delete_if{|p| p.path =~ /^#{ancestor_path}/ }
+      tag.locals.related_pages.delete_if{|p| not p.path =~ /^#{ancestor_path}/ }
     end
     tag.expand unless tag.locals.related_pages.empty?
   end
