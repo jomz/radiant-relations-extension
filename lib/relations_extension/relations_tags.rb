@@ -2,7 +2,7 @@ module RelationsExtension::RelationsTags
   include Radiant::Taggable
 
   tag 'related_pages' do |tag|
-    tag.locals.related_pages = tag.locals.page.related_pages
+    tag.locals.related_pages = tag.locals.page.related_pages.dup
     if tag.attr['from_ancestor']
       ancestor_path = Page.find(tag.attr['from_ancestor']).path
       tag.locals.related_pages.delete_if{|p| not p.path =~ /^#{ancestor_path}/ }
