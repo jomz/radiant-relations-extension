@@ -22,12 +22,12 @@ module RelationsExtension::RelationsTags
     end
   end
   
-  desc %{ }
+  desc %{ Sets the scope to the first related page. }
   tag 'related_pages:first' do |tag|
     tag.locals.page = tag.locals.related_pages.first
     tag.expand
   end
-  desc %{ }
+  desc %{ Sets the scope to the last related page. }
   tag 'related_pages:last' do |tag|
     tag.locals.page = tag.locals.related_pages.last
     tag.expand
