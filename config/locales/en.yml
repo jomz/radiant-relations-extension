@@ -1,6 +1,5 @@
 ---
 en:
-  admin:
-    page_parts:
-      relation_page_part:
-        add_row: Add new relation
+  page_parts:
+    relation_page_part:
+      add_row: Add new relation
