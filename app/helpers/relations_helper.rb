@@ -5,12 +5,12 @@ module RelationsHelper
     if @page && @page.field('relations_target_parent_id')
       options.concat build_tree(Page.find(@page.field('relations_target_parent_id').content), [])
     else
-      options.concat build_tree(Page.root, [])
+      options.concat build_relations_tree(Page.root, [])
     end
     options_for_select(options, selected)
   end
   
-  def build_tree(page, list, level = 0)
+  def build_relations_tree(page, list, level = 0)
     label = "#{'-'*level} #{page.title}"
     id = page.id
     list << [label, id]
@@ -19,7 +19,7 @@ module RelationsHelper
     return list if Radiant::Config["relations.exclude_archive_children"] && page.class_name =~ /ArchivePage/
 
     page.children.each do |p|
-      build_tree p, list, level + 1
+      build_relations_tree p, list, level + 1
     end
     list
   end
