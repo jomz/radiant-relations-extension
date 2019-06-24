@@ -24,12 +24,22 @@ module RelationsExtension::RelationsTags
 
   desc %{ Expands only if there are related pages. }
   tag 'if_related_pages' do |tag|
-    tag.expand if tag.locals.page.related_pages.any?
+    tag.locals.related_pages = tag.locals.page.related_pages.dup
+    if tag.attr['from_ancestor']
+      ancestor_path = Page.find(tag.attr['from_ancestor']).path
+      tag.locals.related_pages.delete_if{|p| not p.path =~ /^#{ancestor_path}/ }
+    end
+    tag.expand unless tag.locals.related_pages.empty?
   end
 
   desc %{ Expands only if there are no related pages. }
   tag 'unless_related_pages' do |tag|
-    tag.expand unless tag.locals.page.related_pages.any?
+    tag.locals.related_pages = tag.locals.page.related_pages.dup
+    if tag.attr['from_ancestor']
+      ancestor_path = Page.find(tag.attr['from_ancestor']).path
+      tag.locals.related_pages.delete_if{|p| not p.path =~ /^#{ancestor_path}/ }
+    end
+    tag.expand if tag.locals.related_pages.empty?
   end
 
   desc %{ Sets the scope to the first related page. }
