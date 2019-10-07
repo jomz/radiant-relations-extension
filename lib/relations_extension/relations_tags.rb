@@ -1,11 +1,22 @@
 module RelationsExtension::RelationsTags
   include Radiant::Taggable
 
+  class TagError < StandardError; end
+
   tag 'related_pages' do |tag|
     tag.locals.related_pages = tag.locals.page.related_pages.dup
     if tag.attr['from_ancestor']
       ancestor_path = Page.find(tag.attr['from_ancestor']).path
       tag.locals.related_pages.delete_if{|p| not p.path =~ /^#{ancestor_path}/ }
+    end
+    if tag.attr['order']
+      attr = tag.attr['order']
+      by, order = attr.strip.split(" ")
+      raise TagError, "Can not order related pages by #{by}: not a valid attribute." unless Page.column_names.include?(by)
+      tag.locals.related_pages.sort_by(&by.to_sym)
+      if(order && order.downcase == 'desc')
+        tag.locals.related_pages.reverse!
+      end
     end
     tag.expand unless tag.locals.related_pages.empty?
   end
@@ -14,6 +25,10 @@ module RelationsExtension::RelationsTags
     You can limit the results by use of a @from_ancestor@ attribute.
     For example: &lt;r:related_pages from_ancestor="8"&gt;&lt;r:each:link/&gt;&lt;/r:related_pages&gt; where 8 is a page id
     The from_ancestor attribute accepts only one page id.
+
+    You can change the order of the results by use of a @order@ attribute.
+    For example: &lt;r:related_pages order="title"&gt;&lt;r:each:link/&gt;&lt;/r:related_pages&gt;
+    By default the order will be ascending, you can reverse it 'SQL style' by adding " desc" to the order attribute.
   }
   tag 'related_pages:each' do |tag|
     tag.locals.related_pages.inject('') do |result, related_page|
