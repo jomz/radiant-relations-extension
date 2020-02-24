@@ -31,6 +31,7 @@ module RelationsExtension::RelationsTags
     By default the order will be ascending, you can reverse it 'SQL style' by adding " desc" to the order attribute.
   }
   tag 'related_pages:each' do |tag|
+    tag.locals.previous_headers = {}
     tag.locals.related_pages.inject('') do |result, related_page|
       tag.locals.page = related_page
       result + tag.expand
@@ -67,5 +68,55 @@ module RelationsExtension::RelationsTags
   tag 'related_pages:last' do |tag|
     tag.locals.page = tag.locals.related_pages.last
     tag.expand
+  end
+
+  desc %{ Expands if the current page in related_pages:each is the first one. }
+  tag 'related_pages:each:if_first' do |tag|
+    tag.expand if tag.locals.page == tag.locals.related_pages.first
+  end
+  tag 'related_pages:each:unless_first' do |tag|
+    tag.expand unless tag.locals.page == tag.locals.related_pages.first
+  end
+  desc %{ Expands if the current page in related_pages:each is the last one. }
+  tag 'related_pages:each:if_last' do |tag|
+    tag.expand if tag.locals.page == tag.locals.related_pages.last
+  end
+  tag 'related_pages:each:unless_last' do |tag|
+    tag.expand unless tag.locals.page == tag.locals.related_pages.last
+  end
+  desc %{
+    Renders the tag contents only if the contents do not match the previous header.
+
+    If you would like to use several header blocks you may use the @name@ attribute to
+    name the header. When a header is named it will not restart until another header of
+    the same name is different.
+
+    Using the @restart@ attribute you can cause other named headers to restart when the
+    present header changes. Simply specify the names of the other headers in a semicolon
+    separated list.
+
+    *Usage:*
+
+    <pre><code><r:related_pages:each>
+      <r:header [name="header_name"] [restart="name1[;name2;...]"]>
+        ...
+      </r:header>
+    </r:related_pages:each>
+    </code></pre>
+  }
+  tag 'related_pages:each:header' do |tag|
+    previous_headers = tag.locals.previous_headers
+    name = tag.attr['name'] || :unnamed
+    restart = (tag.attr['restart'] || '').split(';')
+    header = tag.expand
+    unless header == previous_headers[name]
+      previous_headers[name] = header
+      unless restart.empty?
+        restart.each do |n|
+          previous_headers[n] = nil
+        end
+      end
+      header
+    end
   end
 end
